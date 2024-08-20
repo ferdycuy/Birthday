@@ -8,27 +8,63 @@
       * {
          margin: 0;
          padding: 0;
+         box-sizing: border-box;
       }
 
       body {
          background-color: black;
          overflow: hidden; /* Mencegah scroll di HP */
+         font-family: 'Segoe UI', sans-serif;
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+         min-height: 100vh;
+         text-align: center;
       }
 
       h1 {
-         margin-top: 5%;
-         font-family: 'Segoe UI';
-         font-size: 60px;
-         text-align: center;
+         font-size: 6vw;
          color: white;
+         margin-bottom: 10px;
+         max-width: 90%;
       }
 
       marquee {
-         margin-top: 10%;
-         font-family: 'Abel';
-         font-size: 24px;
+         font-family: 'Abel', sans-serif;
+         font-size: 3vw;
          color: grey;
          width: 100%;
+         margin-bottom: 20px;
+         white-space: nowrap;
+      }
+
+      canvas {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: -1;
+      }
+
+      .play-button {
+         padding: 10px 20px;
+         font-size: 2vw;
+         color: white;
+         background-color: rgba(0, 0, 0, 0.7);
+         border: 2px solid white;
+         border-radius: 5px;
+         cursor: pointer;
+         transition: background-color 0.3s;
+      }
+
+      .play-button:hover {
+         background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .hidden {
+         display: none;
       }
    </style>
 </head>
@@ -43,12 +79,17 @@
       <source src="Monokrom.mp3" type="audio/mpeg">
       Browser Anda tidak mendukung audio HTML5.
    </audio>
+
+   <!-- Tombol Play Music -->
+   <div id="playButton" class="play-button">Play Music</div>
    
    <script>
-      // Event listener untuk memulai audio saat user pertama kali berinteraksi
-      document.addEventListener('click', function() {
+      // Event listener untuk memulai audio saat tombol ditekan
+      document.getElementById('playButton').addEventListener('click', function() {
          var audioElement = document.getElementById('bgMusic');
-         audioElement.play().catch((error) => {
+         audioElement.play().then(() => {
+            document.getElementById('playButton').classList.add('hidden');
+         }).catch((error) => {
             console.log('Autoplay failed:', error);
          });
       });
@@ -57,10 +98,6 @@
       let canvas = document.createElement('canvas');
 
       document.getElementsByTagName('body')[0].appendChild(canvas);
-      canvas.style.position = 'absolute';
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-
       canvas.width = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
 
